@@ -3,65 +3,56 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Fai Fai 💖</title>
+<title>Fai Fai 🤍</title>
 
 <style>
+  @import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
 body {
   margin: 0;
   height: 100vh;
-  background: url("amar.jpg") no-repeat center/cover;
+  background: url("faith.jpg") no-repeat center/cover;
   display: flex;
   justify-content: center;
   align-items: center;
   font-family: sans-serif;
-  overflow: hidden;
-  opacity: 0;
-  animation: fadePage 1.5s forwards;
-}
-
-@keyframes fadePage {
-  to { opacity: 1; }
 }
 
 .card {
-  background: rgba(255,255,255,0.85);
+  background: rgba(255,255,255,0.9);
   padding: 25px;
   border-radius: 25px;
   text-align: center;
   width: 90%;
   max-width: 350px;
-  animation: pulse 2s infinite;
-  box-shadow: 0 0 25px rgba(255,77,109,0.7);
+}
+  .glow {
+  font-family: 'Pacifico', cursive;
+  font-size: 2.4rem;
+  color: #ff4d6d;
+  text-shadow: 0 0 10px #ff8fa3, 0 0 25px #ff4d6d;
+  animation: glow 2s infinite alternate;
+}
+  @keyframes glow {
+  from { text-shadow: 0 0 10px #ff8fa3; }
+  to { text-shadow: 0 0 30px #ff4d6d; }
 }
 
-@keyframes pulse {
-  0% { box-shadow: 0 0 10px rgba(255,77,109,.5); }
-  50% { box-shadow: 0 0 30px rgba(255,77,109,1); }
-  100% { box-shadow: 0 0 10px rgba(255,77,109,.5); }
-}
 
 button {
-  background: #ff4d6d;
+  background: #607d8b;
   color: white;
   border: none;
   padding: 12px 20px;
   border-radius: 30px;
   font-size: 1rem;
 }
-
-.heart {
+  .heart {
   position: fixed;
   color: pink;
-  font-size: 22px;
-  animation: fall linear infinite;
+  font-size: 24px;
+  pointer-events: none;
 }
 
-@keyframes fall {
-  from { transform: translateY(-10vh); opacity: 1; }
-  to { transform: translateY(110vh); opacity: 0; }
-}
-
-/* tap overlay */
 #tap {
   position: fixed;
   inset: 0;
@@ -77,45 +68,53 @@ button {
 </head>
 
 <body>
-
 <div id="tap" onclick="startMusic()">Tap to start 💖</div>
 
-<audio id="music" loop>
-  <source src="romantic.mp3" type="audio/mpeg">
+<audio id="music" loop playsinline preload="auto">
+  <source src="soft.mp3" type="audio/mpeg">
 </audio>
 
 <div class="card">
-  <h1>Amar 💕</h1>
-  <p>My ever smiling and loving friend.</p>
-  <p>Will you be my Valentine? 💖</p>
-  <button onclick="location.href='yes.html'">Yes 💘</button>
+  <h1>Faith 🤍😄</h1>
+  <p>Soft heart, loud laughs, perfect soul.</p>
+  <p>Will you be my Valentine? 🌸</p>
+  <button onclick="location.href='thankyou.html'">Yes 💕</button>
 </div>
-
-<script>
+  <script>
 function startMusic() {
   const m = document.getElementById("music");
-  m.volume = 0;
   m.play();
+  m.volume = 0.8;
   document.getElementById("tap").remove();
-
-  let v = 0;
-  const fade = setInterval(() => {
-    v += 0.05;
-    m.volume = v;
-    if (v >= 1) clearInterval(fade);
-  }, 200);
+  localStorage.setItem("music","yes");
 }
 
-setInterval(() => {
+// beat-synced hearts
+const beat = [300,200,500];
+let i = 0;
+
+function heartBeat(){
   const h = document.createElement("div");
   h.className = "heart";
   h.innerText = "❤";
-  h.style.left = Math.random() * 100 + "vw";
-  h.style.animationDuration = (3 + Math.random() * 3) + "s";
-  document.body.appendChild(h);
-  setTimeout(() => h.remove(), 6000);
-}, 300);
-</script>
+  h.style.left = Math.random()*100+"vw";
+  h.style.top = "-10px";
+   h.animate([
+    {transform:"scale(1)"},
+    {transform:"scale(1.6)"},
+    {transform:"scale(1)"}
+  ],{duration:400});
 
+  document.body.appendChild(h);
+  setTimeout(()=>h.remove(),6000);
+
+  setTimeout(()=>{
+    i=(i+1)%beat.length;
+    heartBeat();
+  },beat[i]);
+}
+heartBeat();
+</script>
 </body>
 </html>
+
